@@ -1,0 +1,240 @@
+{% extends "base.html" %} {% block title %}Search and Edit Salary Record{% endblock %} {% block content
+%}
+<head>
+</head>
+
+<form name="myForm" method="POST" onsubmit="return validateFormSearch(this)"> 
+  <h3 align="center">Search and Edit Salary Record</h3>
+  <table class = "table-hover table-striped table-bordered" align="center">
+    <tr>
+      <td width="250">
+        <label for="String" >Key in Worker Name</label>
+        <input type="String" class="form-control" id="searchwname" name="searchwname" placeholder="Key in worker name"/>
+        <label for="String">Key in Project</label>
+        <input type="String" class="form-control" id="searchprojectlocation" name="searchprojectlocation" placeholder="Key in project title" />
+        <label for="String">Key in  Salary Month and Year</label>
+        <input type="String" class="form-control" id="searchsalarydate" name="searchsalarydate" placeholder="Default month and year" />
+      </td>
+       <td width="250"> 
+        <label for="String">Or Select Worker Name</label>
+        <select class="form-select form-control" aria-label="Default select example" id ="searchworkernamedropdown" onchange="searchwnamedropdownSelected()"> 
+          <option selected>Select worker name here</option>
+          {% for workername in dbworkernamelist %}
+          <option value="{{ workername }}">{{ workername }}</option>
+          {% endfor %}
+        </select>
+        <label for="String">Or Select Project</label>
+        <select class="form-select form-control" aria-label="Default select example" id = "searchprojectdropdown" onchange="searchprojectdropdownSelected()">
+          <option selected>Select project title here</option>
+          {% for projectlist in dbprojectlist %}
+          <option value="{{ projectlist }}">{{ projectlist }}</option>
+          {% endfor %}
+        </select>
+        <label for="String">OR Select Salary Month/Year</label>
+        <select class="form-select form-control" aria-label="Default select example" id="searchsalarydatedropdown" onchange="searchsalarydatedropdownSelected()">
+          <option selected>Select month/year here</option>
+          {% for salarydate in salarydateforcurrentyearonly %}
+          <option value="{{ salarydate }}">{{ salarydate }}</option>          
+          {% endfor %}
+        </select>       
+                            
+       </td>
+       </tr>
+       <tr align="center">
+        <TD><button type="submit" class="btn btn-primary btn-lg">Search</button></TD>
+        <TD><button type="reset" class="btn btn-primary btn-lg">Clear All</button></TD>
+      </tr>
+      <tr>
+        <td></td>
+        <td><input type="string" id="searchControl" name="searchControl" size="1" class="form-control" value="searchControl" hidden></td>
+      </tr>  
+    </table>
+  </form>
+  <br>
+  <br>
+
+    <form name="mySearchResultForm" method="POST" >     
+    <table class = "table-hover table-striped table-bordered" align="center">       
+    {% if row %} 
+      <tr>
+        <td colspan = "2" align="center">Edit information below to save</td>
+      </tr>        
+      <tr>
+        <td><label for="String">Key ID</label></td>
+        <td><input type="number" id="pk" name="pk" size="1" class="form-control" value="{{ row[0] }}" readonly></td>
+      </tr>
+      <tr>
+        <td><label for="String">Worker name</label></td>
+        <td><input type="String" id="editwname" name="editwname" size="1" class="form-control" value="{{ row[1] }}" readonly></td>
+      </tr>
+      <tr>
+        <td><label for="String">Project Location</label></td>
+        <td><input type="String" id="editprojectlocation" name="editprojectlocation" size="1" class="form-control" value="{{ row[3] }}" readonly></td>
+      </tr>
+      <tr>
+        <td><label for="String">Salary Month</label></td>
+        <td><input type="String" id="editsalarydate" name="editsalarydate" size="1" class="form-control" value="{{ row[2] }}" readonly></td>
+      </tr>
+      <tr>
+        <td><label for="String">Day Rate</label></td>
+        <td><input type="number" id="dayrate" name="dayrate" size="1" class="form-control" value="{{ row[36] }}" STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td><label for="String">Rate per hour</label></td>
+        <td><input type="String" id="hrrate" name="hrrate" size="1" class="form-control" value="{{ row[37] }}" readonly></td>
+      </tr>
+      <tr>
+        <td><label for="String">Total hour</label></td>
+        <td><input type="String" id="totalhr" name="totalhr" size="1" class="form-control" value="{{ row[35] }}" readonly></td>
+      </tr>
+      <tr>
+        <td><label for="String">Total pay</label></td>
+        <td><input type="String" id="totalcost" name="totalcost" size="1" class="form-control" value="{{ row[38] }}" readonly></td>
+      </tr>
+      <tr>
+        <td><label for="String">Date created</label></td>
+        <td><input type="String" id="datecreated" name="datecreated" size="1" class="form-control" value="{{ row[39] }}" readonly></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 1</label></td>
+        <td><input type="number" id="d1" name="d1" size="1" class="form-control" value="{{ row[4] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 2</label></td>
+        <td><input type="number" id="d2" name="d2" size="1" class="form-control" value="{{ row[5] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 3</label></td>
+        <td><input type="number" id="d3" name="d3" size="1" class="form-control" value="{{ row[6] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 4</label></td>
+        <td><input type="number" id="d4" name="d4" size="1" class="form-control" value="{{ row[7] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 5</label></td>
+        <td><input type="number" id="d5" name="d5" size="1" class="form-control" value="{{ row[8] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 6</label></td>
+        <td><input type="number" id="d6" name="d6" size="1" class="form-control" value="{{ row[9] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 7</label></td>
+        <td><input type="number" id="d7" name="d7" size="1" class="form-control" value="{{ row[10] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 8</label></td>
+        <td><input type="number" id="d8" name="d8" size="1" class="form-control" value="{{ row[11] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 9</label></td>
+        <td><input type="number" id="d9" name="d9" size="1" class="form-control" value="{{ row[12] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 10</label></td>
+        <td><input type="number" id="d10" name="d10" size="1" class="form-control" value="{{ row[13] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 11</label></td>
+        <td><input type="number" id="d11" name="d11" size="1" class="form-control" value="{{ row[14] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 12</label></td>
+        <td><input type="number" id="d12" name="d12" size="1" class="form-control" value="{{ row[15] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 13</label></td>
+        <td><input type="number" id="d13" name="d13" size="1" class="form-control" value="{{ row[16] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 14</label></td>
+        <td><input type="number" id="d14" name="d14" size="1" class="form-control" value="{{ row[17] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 15</label></td>
+        <td><input type="number" id="d15" name="d15" size="1" class="form-control" value="{{ row[18] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 16</label></td>
+        <td><input type="number" id="d16" name="d16" size="1" class="form-control" value="{{ row[19] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 17</label></td>
+        <td><input type="number" id="d17" name="d17" size="1" class="form-control" value="{{ row[20] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 18</label></td>
+        <td><input type="number" id="d18" name="d18" size="1" class="form-control" value="{{ row[21] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 19</label></td>
+        <td><input type="number" id="d19" name="d19" size="1" class="form-control" value="{{ row[22] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 20</label></td>
+        <td><input type="number" id="d20" name="d20" size="1" class="form-control" value="{{ row[23] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 21</label></td>
+        <td><input type="number" id="d21" name="d21" size="1" class="form-control" value="{{ row[24] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 22</label></td>
+        <td><input type="number" id="d22" name="d22" size="1" class="form-control" value="{{ row[25] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 23</label></td>
+        <td><input type="number" id="d23" name="d23" size="1" class="form-control" value="{{ row[26] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 24</label></td>
+        <td><input type="number" id="d24" name="d24" size="1" class="form-control" value="{{ row[27] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 25</label></td>
+        <td><input type="number" id="d25" name="d25" size="1" class="form-control" value="{{ row[28] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 26</label></td>
+        <td><input type="number" id="d26" name="d26" size="1" class="form-control" value="{{ row[29] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 27</label></td>
+        <td><input type="number" id="d27" name="d27" size="1" class="form-control" value="{{ row[30] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 28</label></td>
+        <td><input type="number" id="d28" name="d28" size="1" class="form-control" value="{{ row[31] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 29</label></td>
+        <td><input type="number" id="d29" name="d29" size="1" class="form-control" value="{{ row[32] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 30</label></td>
+        <td><input type="number" id="d30" name="d30" size="1" class="form-control" value="{{ row[33] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr>
+        <td align="center"><label for="String">Day 31</label></td>
+        <td><input type="number" id="d31" name="d31" size="1" class="form-control" value="{{ row[34] }}"   STYLE="font-weight: bold; background-color: #bbca79;"></td>
+      </tr>
+      <tr align="center">
+        <TD><button type="submit" class="btn btn-primary btn-lg">Save</button></TD>
+        <TD><button type="reset" class="btn btn-primary btn-lg">Clear All</button></TD>
+      </tr> 
+      </table>  
+      
+    {% endif %} 
+      </table>
+      <br>
+      <br>
+      <br>
+      <br>
+    </form>
+    
+   
+    
+  
+
+{% endblock %}
