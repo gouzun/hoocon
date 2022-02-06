@@ -20,13 +20,13 @@
   <body onload="setpreviousmonth()" style="background-color:rgb(84, 168, 179);">
     <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
     
-    <div class="navbar-collapse" id="navbar">
+    <div class="navbar-fixed" id="navbar">
       <div class="navbar-nav">
         {% if user.is_authenticated %}
-        <a class="nav-item nav-link" id="home" href="/">Home</a>
-        <a class="nav-item nav-link" id="View Salary" href="/view_record">View Salary Record</a>
-        <a class="nav-item nav-link" id="Input Salary" href="/input_salary">Add Salary Record</a>
-        <a class="nav-item nav-link" id="Edit Salary" href="/search_salary">Edit Salary Record</a>          
+        <!-- <a class="nav-item nav-link" id="home" href="/">Home</a> -->
+        <a class="nav-item nav-link" id="View Salary" href="/view_record">View </a>
+        <a class="nav-item nav-link" id="Input Salary" href="/input_salary">Add</a>
+        <a class="nav-item nav-link" id="Edit Salary" href="/search_salary">Edit</a>          
         <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
         {% else %}
         <a class="nav-item nav-link" id="login" href="/login">Login</a>
