@@ -64,29 +64,25 @@ function validateForm(form) {
   let wname = document.forms["myForm"]["wname"].value;
   let projectlocation = document.forms["myForm"]["projectlocation"].value;
   let dayrate = document.forms["myForm"]["dayrate"].value;
-
+ 
   /*to validate worker name*/    
-  if (workernamedropdown=="Select worker name here"){    
-    if (wname == "") {      
-      alert("Please key in or select worker name.");
-      document.getElementById('wname').focus();
-      return false;
-    }        
+  if (wname == ""){   
+    alert("Please key in or select worker name.");
+    document.forms["myForm"]["wname"].focus()
+    return false;           
   }
   /*end - to validate worker name */
 
   /*to validate project tittle */
-  if (projectdropdown=="Select project title here"){
-    if (projectlocation == "") {
+  if (projectlocation == "") {
       alert("Please key in or select a project name.");
-      document.getElementById('projectlocation').focus();
-      return false;
-    }       
+      document.forms["myForm"]["projectlocation"].focus()
+      return false;        
   }
   
   if (dayrate == "" || dayrate == 0) {
     alert("Please key in worker day rate");
-    document.getElementById('dayrate').focus();
+    document.forms["myForm"]["dayrate"].focus()
     return false;
   }
 
